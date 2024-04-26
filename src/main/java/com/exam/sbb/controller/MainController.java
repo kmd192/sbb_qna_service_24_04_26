@@ -10,6 +10,6 @@ public class MainController {
     @ResponseBody
     public String index(){
         System.out.println("첫 시작");
-        return "안녕하세요";
+        return "안녕하세요aaa";
     }
 }
