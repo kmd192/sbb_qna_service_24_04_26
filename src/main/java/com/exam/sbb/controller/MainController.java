@@ -2,6 +2,8 @@ package com.exam.sbb.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -121,5 +123,39 @@ public class MainController {
             default -> "모름";
         };
     }
+
+    @GetMapping("/saveSession/{name}/{value}")
+    @ResponseBody
+    public String setSession(@PathVariable String name, @PathVariable String value, HttpServletRequest req){
+        HttpSession session = req.getSession();
+        session.setAttribute(name, value);
+
+        return "세션변수 %s의 값이 %s(으)로 설정되었습니다.".formatted(name, value);
+    }
+
+    @GetMapping("/getSession/{name}")
+    @ResponseBody
+    public String getSession(@PathVariable String name, HttpSession session){
+        String value = (String) session.getAttribute(name);
+
+        return "세션변수 %s의 값이 %s(으)로 설정되었습니다.".formatted(name, value);
+    }
+
+    @GetMapping("/addArticle")
+    @ResponseBody
+    public String addArticale(String title, String body){
+        int id = 1;
+        Article article = new Article(id, title, body);
+
+        return "%d번 게시물이 생성되었습니다.".formatted(id);
+    }
+
+    @AllArgsConstructor
+    class Article{
+        private int id;
+        private String title;
+        private String body;
+    }
+    
 
 }
