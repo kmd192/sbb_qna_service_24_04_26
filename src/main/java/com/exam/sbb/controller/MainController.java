@@ -217,7 +217,7 @@ public class MainController {
 
     @GetMapping("/addPersonOldWay")
     @ResponseBody
-    public Person addPersonOldWay(int id, int age, String name){
+    public Person addPersonOldWay(int id, Integer age, String name){
         Person p = new Person(id, age, name);
         return p;
     }
@@ -244,9 +244,9 @@ public class MainController {
 
     @AllArgsConstructor
     @Getter
-    class Person{
+    class Person {
         private int id;
-        private int age;
+        private Integer age;
         private String name;
     }
 
