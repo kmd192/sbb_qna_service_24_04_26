@@ -5,11 +5,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -144,7 +146,13 @@ public class MainController {
         return "세션변수 %s의 값이 %s(으)로 설정되었습니다.".formatted(name, value);
     }
 
-    private List<Article> articles = new ArrayList<>();
+    //private List<Article> articles = new ArrayList<>();
+    private List<Article> articles = new ArrayList<>(
+            Arrays.asList(
+                    new Article("제목", "내용"),
+                    new Article("제목", "내용")
+            )
+    );
 
     @GetMapping("/addArticle")
     @ResponseBody
@@ -168,8 +176,29 @@ public class MainController {
         return article;
     }
 
+    @GetMapping("/modifyArticle/{id}")
+    @ResponseBody
+    public String modifyArticle(@PathVariable int id, String title, String body){
+
+        Article article = articles
+                .stream()
+                .filter(a -> a.getId() == id)
+                .findFirst()
+                .get();
+
+        if(article == null){
+            return "%d번 게시물은 존재하지 않습니다.".formatted(id);
+        }
+
+        article.setTitle(title);
+        article.setBody(body);
+
+        return "%d번 게시물을 수정하였습니다.".formatted(article.getId());
+    }
+
     @AllArgsConstructor
     @Getter
+    @Setter
     class Article{
         private static int lastId = 0;
         private int id;
