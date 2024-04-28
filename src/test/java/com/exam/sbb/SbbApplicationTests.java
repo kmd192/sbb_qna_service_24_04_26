@@ -46,4 +46,10 @@ class SbbApplicationTests {
 		assertEquals("sbb가 무엇인가요?", q.getSubject());
 	}
 
+	@Test
+	void testJpa3() {
+		Question q = questionRepository.findBySubject("sbb가 무엇인가요?");
+		System.out.println(q);//해당 subject 없으면 null인데 exception 발생안하네?
+	}
+
 }
