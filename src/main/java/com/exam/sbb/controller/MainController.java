@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -23,42 +24,42 @@ public class MainController {
 
     @RequestMapping("/sbb")
     @ResponseBody
-    public String index(){
+    public String index() {
         return "안녕하세요";
     }
 
     @GetMapping("/page1")
     @ResponseBody
-    public String showGet(){
+    public String showGet() {
         return """
-               <form method="POST" action="/page2"/>
-                   <input type="number" name="age" placeholder="나이 입력"/>
-                   <input type="submit" value="page2로 POST 방식으로 이동"/>
-               </form>
-               """;
+                <form method="POST" action="/page2"/>
+                    <input type="number" name="age" placeholder="나이 입력"/>
+                    <input type="submit" value="page2로 POST 방식으로 이동"/>
+                </form>
+                """;
     }
 
     @PostMapping("/page2")
     @ResponseBody
-    public String showPage2Post(@RequestParam(defaultValue= "0") int age){
+    public String showPage2Post(@RequestParam(defaultValue = "0") int age) {
         return """
-               <h1>입력된 나이 : %d</h1>
-               <h1>안녕하세요. POST 방식으로 오신걸 환영합니다.</h1>
-               """.formatted(age);
+                <h1>입력된 나이 : %d</h1>
+                <h1>안녕하세요. POST 방식으로 오신걸 환영합니다.</h1>
+                """.formatted(age);
     }
 
     @GetMapping("/page2")
     @ResponseBody
-    public String showPost(@RequestParam(defaultValue= "0") int age){
+    public String showPost(@RequestParam(defaultValue = "0") int age) {
         return """
-               <h1>입력된 나이 : %d</h1>
-               <h1>안녕하세요. GET 방식으로 오신걸 환영합니다.</h1>
-               """.formatted(age);
+                <h1>입력된 나이 : %d</h1>
+                <h1>안녕하세요. GET 방식으로 오신걸 환영합니다.</h1>
+                """.formatted(age);
     }
 
     @GetMapping("/plus")
     @ResponseBody
-    public int showPlus(int a, int b){
+    public int showPlus(int a, int b) {
         return a + b;
     }
 
@@ -73,23 +74,23 @@ public class MainController {
 
     @GetMapping("/minus")
     @ResponseBody
-    public int showMinus(int a, int b){
+    public int showMinus(int a, int b) {
         return a - b;
     }
 
     @GetMapping("/increase")
     @ResponseBody
-    public int showIncrease(){
+    public int showIncrease() {
         increaseNo++;
         return increaseNo;
     }
 
     @GetMapping("/gugudan")
     @ResponseBody
-    public String showGugudan(int dan, int limit){
+    public String showGugudan(int dan, int limit) {
         String rs = "";
 
-        for(int i = 1; i <= limit; i++){
+        for (int i = 1; i <= limit; i++) {
             rs += "%d * %d = %d<br>\n".formatted(dan, i, dan * i);
         }
         return rs;
@@ -97,12 +98,12 @@ public class MainController {
 
     @GetMapping("/gugudan2")
     @ResponseBody
-    public String showGugudan2(Integer dan, Integer limit){
-        if(dan == null){
+    public String showGugudan2(Integer dan, Integer limit) {
+        if (dan == null) {
             dan = 9;
         }
 
-        if(limit == null){
+        if (limit == null) {
             limit = 9;
         }
 
@@ -131,7 +132,7 @@ public class MainController {
 
     @GetMapping("/saveSession/{name}/{value}")
     @ResponseBody
-    public String setSession(@PathVariable String name, @PathVariable String value, HttpServletRequest req){
+    public String setSession(@PathVariable String name, @PathVariable String value, HttpServletRequest req) {
         HttpSession session = req.getSession();
         session.setAttribute(name, value);
 
@@ -140,7 +141,7 @@ public class MainController {
 
     @GetMapping("/getSession/{name}")
     @ResponseBody
-    public String getSession(@PathVariable String name, HttpSession session){
+    public String getSession(@PathVariable String name, HttpSession session) {
         String value = (String) session.getAttribute(name);
 
         return "세션변수 %s의 값이 %s(으)로 설정되었습니다.".formatted(name, value);
@@ -156,7 +157,7 @@ public class MainController {
 
     @GetMapping("/addArticle")
     @ResponseBody
-    public String addArticle(String title, String body){
+    public String addArticle(String title, String body) {
         Article article = new Article(title, body);
         articles.add(article);
 
@@ -165,7 +166,7 @@ public class MainController {
 
     @GetMapping("/article/{id}")
     @ResponseBody
-    public Article getArticle(@PathVariable int id){
+    public Article getArticle(@PathVariable int id) {
 
         Article article = articles
                 .stream()
@@ -178,7 +179,7 @@ public class MainController {
 
     @GetMapping("/modifyArticle/{id}")
     @ResponseBody
-    public String modifyArticle(@PathVariable int id, String title, String body){
+    public String modifyArticle(@PathVariable int id, String title, String body) {
 
         Article article = articles
                 .stream()
@@ -186,7 +187,7 @@ public class MainController {
                 .findFirst()
                 .orElse(null);
 
-        if(article == null){
+        if (article == null) {
             return "%d번 게시물은 존재하지 않습니다.".formatted(id);
         }
 
@@ -198,7 +199,7 @@ public class MainController {
 
     @GetMapping("/deleteArticle/{id}")
     @ResponseBody
-    public String deleteArticle(@PathVariable int id){
+    public String deleteArticle(@PathVariable int id) {
 
         Article article = articles
                 .stream()
@@ -206,7 +207,7 @@ public class MainController {
                 .findFirst()
                 .orElse(null);
 
-        if(article == null){
+        if (article == null) {
             return "%d번 게시물은 존재하지 않습니다.".formatted(id);
         }
 
@@ -217,18 +218,20 @@ public class MainController {
 
     @GetMapping("/addPersonOldWay")
     @ResponseBody
-    public Person addPersonOldWay(int id, Integer age, String name){
+    public Person addPersonOldWay(int id, int age, String name) {
         Person p = new Person(id, age, name);
         return p;
     }
 
     @GetMapping("/addPerson/{id}")
     @ResponseBody
-    public Person addPerson(Person p){
+    public Person addPerson(Person p) {
         return p;
     }
+}
 
     @AllArgsConstructor
+    @NoArgsConstructor
     @Getter
     @Setter
     class Article{
@@ -243,11 +246,11 @@ public class MainController {
     }
 
     @AllArgsConstructor
+    @NoArgsConstructor
     @Getter
+    @Setter
     class Person {
         private int id;
-        private Integer age;
+        private int age;
         private String name;
     }
-
-}
