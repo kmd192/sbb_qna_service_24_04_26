@@ -2,25 +2,78 @@ package com.exam.sbb;
 
 import com.exam.sbb.question.Question;
 import com.exam.sbb.question.QuestionRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
-class SbbApplicationTests {
+class QuestionRepositoryTests {
 
 	@Autowired
 	private QuestionRepository questionRepository;
+	private static int lastSampleDataId;
+
+	@BeforeEach
+	void beforeEach(){
+		clearData();
+		createSampleDate();
+	}
+
+	private void clearData() {
+		questionRepository.disableForeginKeyChecks();
+		questionRepository.truncate();
+		questionRepository.enableForeginKeyChecks();
+	}
+
+	private void createSampleDate() {
+		Question q1 = new Question();
+		q1.setSubject("sbb가 무엇인가요?");
+		q1.setContent("sbb에 대해서 알고 싶습니다.");
+		q1.setCreateDate(LocalDateTime.now());
+		questionRepository.save(q1);  // 첫번째 질문 저장
+
+		Question q2 = new Question();
+		q2.setSubject("스프링부트 모델 질문입니다.");
+		q2.setContent("id는 자동으로 생성되나요?");
+		q2.setCreateDate(LocalDateTime.now());
+		questionRepository.save(q2);  // 두번째 질문 저장
+
+		lastSampleDataId = q2.getId();
+	}
 
 	@Test
+	void 저장(){
+		Question q1 = new Question();
+		q1.setSubject("sbb가 무엇인가요?");
+		q1.setContent("sbb에 대해서 알고 싶습니다.");
+		q1.setCreateDate(LocalDateTime.now());
+		questionRepository.save(q1);  // 첫번째 질문 저장
+
+		Question q2 = new Question();
+		q2.setSubject("스프링부트 모델 질문입니다.");
+		q2.setContent("id는 자동으로 생성되나요?");
+		q2.setCreateDate(LocalDateTime.now());
+		questionRepository.save(q2);  // 두번째 질문 저장
+
+		assertThat(q1.getId()).isEqualTo(lastSampleDataId + 1);
+		assertThat(q2.getId()).isEqualTo(lastSampleDataId + 2);
+	}
+
+	@Test
+	void 삭제() {
+		assertThat(questionRepository.count()).isEqualTo(lastSampleDataId);
+		Question q = questionRepository.findById(1).get();
+		questionRepository.delete(q);
+		assertEquals(1, questionRepository.count());
+	}
+
+	/*@Test
 	void testJpa0(){
 		Question q1 = new Question();
 		q1.setSubject("sbb가 무엇인가요?");
@@ -103,6 +156,6 @@ class SbbApplicationTests {
 		Question q = oq.get();
 		questionRepository.delete(q);
 		assertEquals(1, questionRepository.count());
-	}
+	}*/
 
 }
