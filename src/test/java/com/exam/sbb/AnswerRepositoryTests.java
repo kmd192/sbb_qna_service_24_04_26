@@ -30,9 +30,9 @@ class AnswerRepositoryTests {
 	private void clearData() {
 		QuestionRepositoryTests.clearData(questionRepository);
 
-		questionRepository.disableForeginKeyChecks();
+		answerRepository.disableForeginKeyChecks();
 		answerRepository.truncate();
-		questionRepository.enableForeginKeyChecks();
+		answerRepository.enableForeginKeyChecks();
 	}
 
 	private void createSampleDate() {
