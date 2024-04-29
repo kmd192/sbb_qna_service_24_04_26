@@ -32,9 +32,7 @@ class QuestionRepositoryTests {
 	}
 
 	public static void clearData(QuestionRepository questionRepository) {
-		questionRepository.disableForeginKeyChecks();
-		questionRepository.truncate();
-		questionRepository.enableForeginKeyChecks();
+		questionRepository.truncateTable();
 	}
 
 	public static int createSampleData(QuestionRepository questionRepository) {
