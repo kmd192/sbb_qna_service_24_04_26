@@ -22,7 +22,7 @@ class QuestionRepositoryTests {
 	@BeforeEach
 	void beforeEach(){
 		clearData();
-		createSampleDate();
+		createSampleData();
 	}
 
 	private void clearData() {
@@ -31,7 +31,13 @@ class QuestionRepositoryTests {
 		questionRepository.enableForeginKeyChecks();
 	}
 
-	private void createSampleDate() {
+	public static void clearData(QuestionRepository questionRepository) {
+		questionRepository.disableForeginKeyChecks();
+		questionRepository.truncate();
+		questionRepository.enableForeginKeyChecks();
+	}
+
+	public static int createSampleData(QuestionRepository questionRepository) {
 		Question q1 = new Question();
 		q1.setSubject("sbb가 무엇인가요?");
 		q1.setContent("sbb에 대해서 알고 싶습니다.");
@@ -44,7 +50,11 @@ class QuestionRepositoryTests {
 		q2.setCreateDate(LocalDateTime.now());
 		questionRepository.save(q2);  // 두번째 질문 저장
 
-		lastSampleDataId = q2.getId();
+		return q2.getId();
+	}
+
+	public void createSampleData() {
+		lastSampleDataId = createSampleData(questionRepository);
 	}
 
 	@Test
