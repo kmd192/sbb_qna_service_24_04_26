@@ -8,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 class QuestionRepositoryTests {
@@ -70,7 +70,35 @@ class QuestionRepositoryTests {
 		assertThat(questionRepository.count()).isEqualTo(lastSampleDataId);
 		Question q = questionRepository.findById(1).get();
 		questionRepository.delete(q);
-		assertEquals(1, questionRepository.count());
+		assertThat(questionRepository.count()).isEqualTo(lastSampleDataId - 1);
+	}
+
+	@Test
+	void 수정() {
+		assertThat(questionRepository.count()).isEqualTo(lastSampleDataId);
+		Question q = questionRepository.findById(1).get();
+		q.setSubject("수정된 제목");
+		questionRepository.save(q);
+
+		q = questionRepository.findById(1).get();
+		assertThat(q.getSubject()).isEqualTo("수정된 제목");
+	}
+
+	@Test
+	void findAll() {
+		// SELECT * FROM question
+		List<Question> all = questionRepository.findAll();
+		assertThat(all.size()).isEqualTo(lastSampleDataId);
+
+		Question q = all.get(0);
+		assertThat(q.getSubject()).isEqualTo("sbb가 무엇인가요?");
+	}
+
+	@Test
+	void findBySubjectLike() {
+		List<Question> qList = questionRepository.findBySubjectLike("sbb%");
+		Question q = qList.get(0);
+		assertThat(q.getSubject()).isEqualTo("sbb가 무엇인가요?");
 	}
 
 	/*@Test
