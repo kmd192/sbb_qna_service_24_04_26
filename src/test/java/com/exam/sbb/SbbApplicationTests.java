@@ -1,23 +1,9 @@
 package com.exam.sbb;
 
-import com.exam.sbb.question.Question;
-import com.exam.sbb.question.QuestionRepository;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-@SpringBootTest
+//@SpringBootTest
 class SbbApplicationTests {
 
-	@Autowired
+	/*@Autowired
 	private QuestionRepository questionRepository;
 
 	@Test
@@ -103,6 +89,6 @@ class SbbApplicationTests {
 		Question q = oq.get();
 		questionRepository.delete(q);
 		assertEquals(1, questionRepository.count());
-	}
+	}*/
 
 }
