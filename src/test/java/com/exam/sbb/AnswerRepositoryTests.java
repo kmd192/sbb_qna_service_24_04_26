@@ -28,7 +28,7 @@ class AnswerRepositoryTests {
 	@BeforeEach
 	void beforeEach(){
 		clearData();
-		createSampleDate();
+		createSampleData();
 	}
 
 	private void clearData() {
@@ -37,7 +37,7 @@ class AnswerRepositoryTests {
 		answerRepository.truncateTable();
 	}
 
-	private void createSampleDate() {
+	private void createSampleData() {
 		QuestionRepositoryTests.createSampleData(questionRepository);
 
 		Question q = questionRepository.findById(1).get();
