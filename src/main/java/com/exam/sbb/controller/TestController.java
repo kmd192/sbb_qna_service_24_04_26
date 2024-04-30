@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Controller
-public class MainController {
+public class TestController {
 
     private int increaseNo = 0;
 
