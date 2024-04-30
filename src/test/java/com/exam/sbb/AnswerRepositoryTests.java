@@ -61,19 +61,19 @@ class AnswerRepositoryTests {
 
 	@Test
 	void 저장() {
-		Question q = questionRepository.findById(1).get();
+		Question q = questionRepository.findById(2).get();
 
 		Answer a1 = new Answer();
-		a1.setContent("sbb는 질문답변 게시판입니다.");
-		a1.setQuestion(q);  // 어떤 질문의 답변인지 알기위해서 Question 객체가 필요하다.
+		a1.setContent("네 자동으로 생성됩니다.");
 		a1.setCreateDate(LocalDateTime.now());
-		answerRepository.save(a1);
+		q.addAnswer(a1);
 
 		Answer a2 = new Answer();
-		a2.setContent("sbb에서는 주로 스프링관련 내용을 다룹니다.");
-		a2.setQuestion(q);  // 어떤 질문의 답변인지 알기위해서 Question 객체가 필요하다.
+		a2.setContent("네~ 맞아요!");
 		a2.setCreateDate(LocalDateTime.now());
-		answerRepository.save(a2);
+		q.addAnswer(a2);
+
+		questionRepository.save(q);
 	}
 
 	@Test

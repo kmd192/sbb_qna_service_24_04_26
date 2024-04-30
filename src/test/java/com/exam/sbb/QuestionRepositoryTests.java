@@ -26,9 +26,10 @@ class QuestionRepositoryTests {
 	}
 
 	private void clearData() {
-		questionRepository.disableForeginKeyChecks();
+		/*questionRepository.disableForeginKeyChecks();
 		questionRepository.truncate();
-		questionRepository.enableForeginKeyChecks();
+		questionRepository.enableForeginKeyChecks();*/
+		clearData(questionRepository);
 	}
 
 	public static void clearData(QuestionRepository questionRepository) {
