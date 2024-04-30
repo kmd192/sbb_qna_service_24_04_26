@@ -9,11 +9,14 @@
         </tr>
     </thead>
     <tbody>
-        <tr th:each="question : ${questionList}">
+        <tr th:each="question, loop : ${questionList}">
             <td>
-                <span th:text="${question.id}"></span>번
+                <!--[[${loop.index}]]/[[${loop.size}]]-->
+                [[${loop.count}]]
             </td>
-            <td th:text="${question.subject}"></td>
+            <td>
+                [[${question.subject}]]
+            </td>
             <td th:text="${question.createDate}"></td>
         </tr>
     </tbody>
