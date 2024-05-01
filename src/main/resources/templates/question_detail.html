@@ -1,0 +1,4 @@
+<h1 th:text="|제목 : ${question.subject}|"></h1>
+<!-- standard date time인 경우 dates를 사용하고 localdatetime인경우 temporals를 사용한다 <div th:text="|날짜 : ${#dates.format(question.createDate, 'yyyy-MM-dd HH:mm:ss')}|"></div>-->
+<div th:text="|날짜 : ${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm:ss')}|"></div>
+<div th:text="|내용 : ${question.content}|"></div>
