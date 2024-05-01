@@ -4,7 +4,6 @@ import com.exam.sbb.DataNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 // @RequiredArgsConstructor 생성자 주입의 한가지 방법
@@ -22,13 +21,15 @@ public class QuestionService {
     }
 
     public Question getQuestion(int id) {
-        Optional<Question> oq = questionRepository.findById(id);
+        return questionRepository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException(("no %d question not found".formatted(id))));
+        /*Optional<Question> oq = questionRepository.findById(id);
 
         if(oq.isPresent()){
             return oq.get();
         }
 
-        throw new DataNotFoundException("question not found");
+        throw new DataNotFoundException("question not found");*/
     }
 
 }
