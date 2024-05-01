@@ -2,3 +2,10 @@
 <!-- standard date time인 경우 dates를 사용하고 localdatetime인경우 temporals를 사용한다 <div th:text="|날짜 : ${#dates.format(question.createDate, 'yyyy-MM-dd HH:mm:ss')}|"></div>-->
 <div th:text="|날짜 : ${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm:ss')}|"></div>
 <div th:text="|내용 : ${question.content}|"></div>
+
+<form th:action="@{|/answer/create/${question.id}|}" method="post">
+    <!--<label for="content">내용</label>-->
+    <textarea name="content" id="content" rows="15"></textarea>
+    <input type="submit" value="답변등록">
+    <button type="submit">답변등록</button>
+</form>
