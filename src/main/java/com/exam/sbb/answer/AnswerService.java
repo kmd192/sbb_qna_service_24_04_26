@@ -18,9 +18,6 @@ public class AnswerService {
         answer.setCreateDate(LocalDateTime.now());
         answer.setQuestion(question);
         this.answerRepository.save(answer);
-<<<<<<< HEAD
-        //답변 저장
-=======
->>>>>>> 1bd40efabd65f28c3855318b162c804ea8378225
     }
+
 }

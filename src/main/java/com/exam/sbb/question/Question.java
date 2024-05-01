@@ -26,7 +26,9 @@ public class Question {
 
     private LocalDateTime createDate;
 
-    @OneToMany(mappedBy = "question", cascade = {CascadeType.REMOVE, CascadeType.ALL}, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "question", cascade = {CascadeType.REMOVE, CascadeType.ALL})
+    // OneToMany는 기본적으로 LAZY(질문 먼저 가져오고, 답변 따로 가져오고)
+    // -> fetch = FetchType.EAGER(left join으로 질문,답변 한번에 가져옴)
     private List<Answer> answerList = new ArrayList<>();
 
     public void addAnswer(Answer answer) {
