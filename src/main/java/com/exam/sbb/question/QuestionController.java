@@ -1,7 +1,5 @@
-package com.exam.sbb.controller;
+package com.exam.sbb.question;
 
-import com.exam.sbb.question.Question;
-import com.exam.sbb.question.QuestionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
