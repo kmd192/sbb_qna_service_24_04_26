@@ -39,11 +39,11 @@ public class QuestionController {
     }
 
     @GetMapping("/detail/{id}")
-    public String detail(Model model, @PathVariable int id, @Valid AnswerForm answerForm, BindingResult bindingResult){
+    public String detail(Model model, @PathVariable int id, AnswerForm answerForm){
         Question question = questionService.getQuestion(id);
 
         model.addAttribute("question", question);
-
+        //model.addAttribute("answerForm", new AnswerForm(""));
         return "question_detail";
     }
 
