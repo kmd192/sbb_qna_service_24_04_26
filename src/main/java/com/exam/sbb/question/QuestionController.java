@@ -1,8 +1,10 @@
 package com.exam.sbb.question;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,13 +47,13 @@ public class QuestionController {
     }
 
     @GetMapping("/create")
-    public String questionCreate() {
+    public String questionCreate(QuestionForm questionForm) {
         return "question_form";
     }
 
     @PostMapping("/create")
-    public String questionCreate(Model model, QuestionForm questionForm){
-        boolean hasError = false;
+    public String questionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult){
+        /*boolean hasError = false;
 
         if(questionForm.getSubject() == null || questionForm.getSubject().trim().length() == 0){
             model.addAttribute("subjectErrorMsg", "제목을 입력해주세요");
@@ -65,6 +67,9 @@ public class QuestionController {
 
         if(hasError){
             model.addAttribute("questionForm", questionForm);
+            return "question_form";
+        }*/
+        if(bindingResult.hasErrors()){
             return "question_form";
         }
 
