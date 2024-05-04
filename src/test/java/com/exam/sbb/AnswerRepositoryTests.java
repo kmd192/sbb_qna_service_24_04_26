@@ -83,9 +83,12 @@ class AnswerRepositoryTests {
 	}
 
 	@Test
+	@Transactional
+	@Rollback(false)
 	void 관련된_question_조회() {
 		Answer a = answerRepository.findById(1L).get();
 		Question q = a.getQuestion();
+
 		assertThat(q.getId()).isEqualTo(1);
 	}
 
