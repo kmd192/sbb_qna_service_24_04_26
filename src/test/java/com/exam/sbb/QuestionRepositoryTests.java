@@ -63,7 +63,7 @@ class QuestionRepositoryTests {
 
 	@Test
 	void createManySampleData(){
-		boolean run = true;
+		boolean run = false;
 
 		if(run == false) return;
 
