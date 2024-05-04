@@ -40,7 +40,7 @@ class AnswerRepositoryTests {
 	private void createSampleData() {
 		QuestionRepositoryTests.createSampleData(questionRepository);
 
-		Question q = questionRepository.findById(1).get();
+		Question q = questionRepository.findById(1L).get();
 
 		Answer a1 = new Answer();
 		a1.setContent("sbb는 질문답변 게시판입니다.");
@@ -61,7 +61,7 @@ class AnswerRepositoryTests {
 
 	@Test
 	void 저장() {
-		Question q = questionRepository.findById(2).get();
+		Question q = questionRepository.findById(2L).get();
 
 		Answer a1 = new Answer();
 		a1.setContent("네 자동으로 생성됩니다.");
@@ -78,13 +78,13 @@ class AnswerRepositoryTests {
 
 	@Test
 	void 조회() {
-		Answer a = answerRepository.findById(1).get();
+		Answer a = answerRepository.findById(1L).get();
 		assertThat(a.getContent()).isEqualTo("sbb는 질문답변 게시판입니다.");
 	}
 
 	@Test
 	void 관련된_question_조회() {
-		Answer a = answerRepository.findById(1).get();
+		Answer a = answerRepository.findById(1L).get();
 		Question q = a.getQuestion();
 		assertThat(q.getId()).isEqualTo(1);
 	}
@@ -94,7 +94,7 @@ class AnswerRepositoryTests {
 	@Rollback(false)
 	void question으로부터_관련된_답변들_조회() {
 		//beforeEach를 변경하기 전에 1차캐시,영속성 컨텍스트의 값이었었음-> Question q = questionRepository.findById(1).get();
-		Question q = questionRepository.findById(1).get();
+		Question q = questionRepository.findById(1L).get();
 		List<Answer> answerList = q.getAnswerList();
 
 		assertThat(answerList.size()).isEqualTo(2);

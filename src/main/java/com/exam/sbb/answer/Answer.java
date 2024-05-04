@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class Answer {
     @Id //primary key
     @GeneratedValue(strategy = GenerationType.IDENTITY) // auto increment
-    private Integer id;
+    private Long id;
 
     @Column(columnDefinition = "TEXT")
     private String content;
