@@ -4,7 +4,9 @@ import com.exam.sbb.answer.Answer;
 import com.exam.sbb.answer.AnswerRepository;
 import com.exam.sbb.question.Question;
 import com.exam.sbb.question.QuestionRepository;
+import com.exam.sbb.user.SiteUser;
 import com.exam.sbb.user.UserRepository;
+import com.exam.sbb.user.UserService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,6 +29,9 @@ class AnswerRepositoryTests {
 	private AnswerRepository answerRepository;
 
 	@Autowired
+	private UserService userService;
+
+	@Autowired
 	private UserRepository userRepository;
 
 	@BeforeEach
@@ -42,7 +47,7 @@ class AnswerRepositoryTests {
 		clearData(userRepository, questionRepository, answerRepository);
 	}
 
-	public void clearData(UserRepository userRepository,
+	private void clearData(UserRepository userRepository,
 						  QuestionRepository questionRepository,
 						  AnswerRepository answerRepository) {
 		UserServiceTests.clearData(userRepository, questionRepository, answerRepository);
@@ -59,18 +64,19 @@ class AnswerRepositoryTests {
 	}*/
 
 	private void createSampleData(){
+		UserServiceTests.createSampleData2(userService);
+		QuestionRepositoryTests.createSampleData(questionRepository);
 		createSampleData(questionRepository, answerRepository);
 	}
 
 	public static void createSampleData(QuestionRepository questionRepository, AnswerRepository answerRepository) {
-		QuestionRepositoryTests.createSampleData(questionRepository);
 
 		Question q = questionRepository.findById(1L).get();
 
 		Answer a1 = new Answer();
 		a1.setContent("sbb는 질문답변 게시판입니다.");
 		a1.setQuestion(q);  // 어떤 질문의 답변인지 알기위해서 Question 객체가 필요하다.
-		//a1.setAuthor(new SiteUser(1L));
+		a1.setAuthor(new SiteUser(1L));
 		a1.setCreateDate(LocalDateTime.now());
 		answerRepository.save(a1);
 
@@ -79,7 +85,7 @@ class AnswerRepositoryTests {
 		Answer a2 = new Answer();
 		a2.setContent("sbb에서는 주로 스프링관련 내용을 다룹니다.");
 		a2.setQuestion(q);  // 어떤 질문의 답변인지 알기위해서 Question 객체가 필요하다.
-		//a2.setAuthor(new SiteUser(2L));
+		a2.setAuthor(new SiteUser(2L));
 		a2.setCreateDate(LocalDateTime.now());
 		answerRepository.save(a2);
 
@@ -94,13 +100,13 @@ class AnswerRepositoryTests {
 
 		Answer a1 = new Answer();
 		a1.setContent("네 자동으로 생성됩니다.");
-		//a1.setAuthor(new SiteUser(1L));
+		a1.setAuthor(new SiteUser(1L));
 		a1.setCreateDate(LocalDateTime.now());
 		q.addAnswer(a1);
 
 		Answer a2 = new Answer();
 		a2.setContent("네~ 맞아요!");
-		//a2.setAuthor(new SiteUser(2L));
+		a2.setAuthor(new SiteUser(2L));
 		a2.setCreateDate(LocalDateTime.now());
 		q.addAnswer(a2);
 

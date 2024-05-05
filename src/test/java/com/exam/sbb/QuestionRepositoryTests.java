@@ -5,6 +5,8 @@ import com.exam.sbb.question.Question;
 import com.exam.sbb.question.QuestionRepository;
 import com.exam.sbb.user.SiteUser;
 import com.exam.sbb.user.UserRepository;
+import com.exam.sbb.user.UserService;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.annotation.Rollback;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,6 +35,9 @@ class QuestionRepositoryTests {
 	@Autowired
 	private AnswerRepository answerRepository;
 
+	@Autowired
+	private UserService userService;
+
 	@BeforeEach
 	void beforeEach(){
 		clearData();
@@ -45,14 +51,16 @@ class QuestionRepositoryTests {
 		clearData(userRepository, questionRepository, answerRepository);
 	}
 
-	public void clearData(UserRepository userRepository,
+	private void clearData(UserRepository userRepository,
 						  QuestionRepository questionRepository,
 						  AnswerRepository answerRepository) {
 		UserServiceTests.clearData(userRepository, questionRepository, answerRepository);
 	}
 
 	private void createSampleData() {
+		UserServiceTests.createSampleData2(userService);
 		lastSampleDataId = createSampleData(questionRepository);
+		AnswerRepositoryTests.createSampleData(questionRepository, answerRepository);
 	}
 
 	public static Long createSampleData(QuestionRepository questionRepository) {
@@ -60,14 +68,14 @@ class QuestionRepositoryTests {
 		Question q1 = new Question();
 		q1.setSubject("sbb가 무엇인가요?");
 		q1.setContent("sbb에 대해서 알고 싶습니다.");
-		//q1.setAuthor(new SiteUser(2L));
+		q1.setAuthor(new SiteUser(2L));
 		q1.setCreateDate(LocalDateTime.now());
 		questionRepository.save(q1);  // 첫번째 질문 저장
 
 		Question q2 = new Question();
 		q2.setSubject("스프링부트 모델 질문입니다.");
 		q2.setContent("id는 자동으로 생성되나요?");
-		//q2.setAuthor(new SiteUser(2L));
+		q2.setAuthor(new SiteUser(2L));
 		q2.setCreateDate(LocalDateTime.now());
 		questionRepository.save(q2);  // 두번째 질문 저장
 
@@ -75,6 +83,8 @@ class QuestionRepositoryTests {
 	}
 
 	@Test
+	@Transactional
+	@Rollback(false)
 	void createManySampleData(){
 		boolean run = false;
 
@@ -91,19 +101,21 @@ class QuestionRepositoryTests {
 	}
 
 	@Test
+	@Transactional
+	@Rollback(false)
 	void 저장(){
 
 		Question q1 = new Question();
 		q1.setSubject("sbb가 무엇인가요?");
 		q1.setContent("sbb에 대해서 알고 싶습니다.");
-		//q1.setAuthor(new SiteUser(2L));
+		q1.setAuthor(new SiteUser(2L));
 		q1.setCreateDate(LocalDateTime.now());
 		questionRepository.save(q1);  // 첫번째 질문 저장
 
 		Question q2 = new Question();
 		q2.setSubject("스프링부트 모델 질문입니다.");
 		q2.setContent("id는 자동으로 생성되나요?");
-		//q2.setAuthor(new SiteUser(2L));
+		q2.setAuthor(new SiteUser(2L));
 		q2.setCreateDate(LocalDateTime.now());
 		questionRepository.save(q2);  // 두번째 질문 저장
 
@@ -112,6 +124,8 @@ class QuestionRepositoryTests {
 	}
 
 	@Test
+	@Transactional
+	@Rollback(false)
 	void 삭제() {
 		assertThat(questionRepository.count()).isEqualTo(lastSampleDataId);
 		Question q = questionRepository.findById(1L).get();
@@ -120,6 +134,8 @@ class QuestionRepositoryTests {
 	}
 
 	@Test
+	@Transactional
+	@Rollback(false)
 	void 수정() {
 		assertThat(questionRepository.count()).isEqualTo(lastSampleDataId);
 		Question q = questionRepository.findById(1L).get();
@@ -131,6 +147,8 @@ class QuestionRepositoryTests {
 	}
 
 	@Test
+	@Transactional
+	@Rollback(false)
 	void findAll() {
 		// SELECT * FROM question
 		List<Question> all = questionRepository.findAll();
@@ -141,6 +159,8 @@ class QuestionRepositoryTests {
 	}
 
 	@Test
+	@Transactional
+	@Rollback(false)
 	void findBySubjectLike() {
 		List<Question> qList = questionRepository.findBySubjectLike("sbb%");
 		Question q = qList.get(0);
@@ -148,6 +168,8 @@ class QuestionRepositoryTests {
 	}
 
 	@Test
+	@Transactional
+	@Rollback(false)
 	void Pageable() {
 		// Pageable : 한 페이지에 몇 개의 아이템이 나와야 하는지 + 현재 몇 페이지인지
 		Pageable pageable = PageRequest.of(0, Math.toIntExact(lastSampleDataId));

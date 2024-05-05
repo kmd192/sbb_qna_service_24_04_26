@@ -34,11 +34,13 @@ public class UserServiceTests {
     }
 
     private void createSampleData() {
-        createSampleData(questionRepository, answerRepository, userService);
+        userService.create("admin", "admin@test.com", "1234");
+        userService.create("user1", "user1@test.com", "1234");
+        QuestionRepositoryTests.createSampleData(questionRepository);
+        AnswerRepositoryTests.createSampleData(questionRepository, answerRepository);
     }
 
-    public void createSampleData(QuestionRepository questionRepository, AnswerRepository answerRepository, UserService userService) {
-        AnswerRepositoryTests.createSampleData(questionRepository, answerRepository);
+    public static void createSampleData2(UserService userService) {
         userService.create("admin", "admin@test.com", "1234");
         userService.create("user1", "user1@test.com", "1234");
     }
