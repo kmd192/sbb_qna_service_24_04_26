@@ -1,6 +1,7 @@
 package com.exam.sbb.answer;
 
 import com.exam.sbb.question.Question;
+import com.exam.sbb.user.SiteUser;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +20,9 @@ public class Answer {
     private String content;
 
     private LocalDateTime createDate;
+
+    @ManyToOne
+    private SiteUser author;
 
     @ManyToOne
     //@JoinColumn(name = "question_id", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))

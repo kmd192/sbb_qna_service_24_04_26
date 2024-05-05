@@ -1,6 +1,7 @@
 package com.exam.sbb.question;
 
 import com.exam.sbb.answer.Answer;
+import com.exam.sbb.user.SiteUser;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,6 +26,9 @@ public class Question {
     private String content;
 
     private LocalDateTime createDate;
+
+    @ManyToOne
+    private SiteUser author;
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
     // OneToMany는 기본적으로 LAZY(질문 먼저 가져오고, 답변 따로 가져오고)
