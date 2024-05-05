@@ -1,8 +1,10 @@
 package com.exam.sbb;
 
+import com.exam.sbb.answer.AnswerRepository;
 import com.exam.sbb.question.Question;
 import com.exam.sbb.question.QuestionRepository;
 import com.exam.sbb.user.SiteUser;
+import com.exam.sbb.user.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,12 @@ class QuestionRepositoryTests {
 	private QuestionRepository questionRepository;
 	private static Long lastSampleDataId;
 
+	@Autowired
+	private UserRepository userRepository;
+
+	@Autowired
+	private AnswerRepository answerRepository;
+
 	@BeforeEach
 	void beforeEach(){
 		clearData();
@@ -34,34 +42,36 @@ class QuestionRepositoryTests {
 		/*questionRepository.disableForeginKeyChecks();
 		questionRepository.truncate();
 		questionRepository.enableForeginKeyChecks();*/
-		clearData(questionRepository);
+		clearData(userRepository, questionRepository, answerRepository);
 	}
 
-	public static void clearData(QuestionRepository questionRepository) {
-		questionRepository.deleteAll();
-		questionRepository.truncateTable();
+	public void clearData(UserRepository userRepository,
+						  QuestionRepository questionRepository,
+						  AnswerRepository answerRepository) {
+		UserServiceTests.clearData(userRepository, questionRepository, answerRepository);
+	}
+
+	private void createSampleData() {
+		lastSampleDataId = createSampleData(questionRepository);
 	}
 
 	public static Long createSampleData(QuestionRepository questionRepository) {
+
 		Question q1 = new Question();
 		q1.setSubject("sbb가 무엇인가요?");
 		q1.setContent("sbb에 대해서 알고 싶습니다.");
-		q1.setAuthor(new SiteUser(2L));
+		//q1.setAuthor(new SiteUser(2L));
 		q1.setCreateDate(LocalDateTime.now());
 		questionRepository.save(q1);  // 첫번째 질문 저장
 
 		Question q2 = new Question();
 		q2.setSubject("스프링부트 모델 질문입니다.");
 		q2.setContent("id는 자동으로 생성되나요?");
-		q2.setAuthor(new SiteUser(2L));
+		//q2.setAuthor(new SiteUser(2L));
 		q2.setCreateDate(LocalDateTime.now());
 		questionRepository.save(q2);  // 두번째 질문 저장
 
 		return q2.getId();
-	}
-
-	private void createSampleData() {
-		lastSampleDataId = createSampleData(questionRepository);
 	}
 
 	@Test
@@ -82,15 +92,18 @@ class QuestionRepositoryTests {
 
 	@Test
 	void 저장(){
+
 		Question q1 = new Question();
 		q1.setSubject("sbb가 무엇인가요?");
 		q1.setContent("sbb에 대해서 알고 싶습니다.");
+		//q1.setAuthor(new SiteUser(2L));
 		q1.setCreateDate(LocalDateTime.now());
 		questionRepository.save(q1);  // 첫번째 질문 저장
 
 		Question q2 = new Question();
 		q2.setSubject("스프링부트 모델 질문입니다.");
 		q2.setContent("id는 자동으로 생성되나요?");
+		//q2.setAuthor(new SiteUser(2L));
 		q2.setCreateDate(LocalDateTime.now());
 		questionRepository.save(q2);  // 두번째 질문 저장
 

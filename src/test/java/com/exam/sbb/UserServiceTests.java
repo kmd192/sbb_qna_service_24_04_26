@@ -44,11 +44,18 @@ public class UserServiceTests {
     }
 
     private void clearData() {
-        clearData(questionRepository, answerRepository, userRepository);
+        clearData(userRepository, questionRepository, answerRepository);
     }
 
-    public void clearData(QuestionRepository questionRepository, AnswerRepository answerRepository, UserRepository userRepository) {
-        AnswerRepositoryTests.clearData(questionRepository, answerRepository);
+    public static void clearData(UserRepository userRepository,
+                          QuestionRepository questionRepository,
+                          AnswerRepository answerRepository) {
+        answerRepository.deleteAll();
+        answerRepository.truncateTable();
+
+        questionRepository.deleteAll();
+        questionRepository.truncateTable();
+
         userRepository.deleteAll();
         userRepository.truncateTable();
     }
