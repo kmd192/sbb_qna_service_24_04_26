@@ -4,6 +4,7 @@ import com.exam.sbb.answer.Answer;
 import com.exam.sbb.answer.AnswerRepository;
 import com.exam.sbb.question.Question;
 import com.exam.sbb.question.QuestionRepository;
+import com.exam.sbb.user.SiteUser;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,13 +32,21 @@ class AnswerRepositoryTests {
 		createSampleData();
 	}
 
-	private void clearData() {
-		QuestionRepositoryTests.clearData(questionRepository);
-		answerRepository.deleteAll();
-		answerRepository.truncateTable();
+	private void clearData(){
+		clearData(questionRepository, answerRepository);
 	}
 
-	private void createSampleData() {
+	public static void clearData(QuestionRepository questionRepository, AnswerRepository answerRepository) {
+		answerRepository.deleteAll();
+		answerRepository.truncateTable();
+		QuestionRepositoryTests.clearData(questionRepository);
+	}
+
+	private void createSampleData(){
+		createSampleData(questionRepository, answerRepository);
+	}
+
+	public static void createSampleData(QuestionRepository questionRepository, AnswerRepository answerRepository) {
 		QuestionRepositoryTests.createSampleData(questionRepository);
 
 		Question q = questionRepository.findById(1L).get();
@@ -45,6 +54,7 @@ class AnswerRepositoryTests {
 		Answer a1 = new Answer();
 		a1.setContent("sbb는 질문답변 게시판입니다.");
 		a1.setQuestion(q);  // 어떤 질문의 답변인지 알기위해서 Question 객체가 필요하다.
+		a1.setAuthor(new SiteUser(1L));
 		a1.setCreateDate(LocalDateTime.now());
 		answerRepository.save(a1);
 
@@ -53,6 +63,7 @@ class AnswerRepositoryTests {
 		Answer a2 = new Answer();
 		a2.setContent("sbb에서는 주로 스프링관련 내용을 다룹니다.");
 		a2.setQuestion(q);  // 어떤 질문의 답변인지 알기위해서 Question 객체가 필요하다.
+		a2.setAuthor(new SiteUser(2L));
 		a2.setCreateDate(LocalDateTime.now());
 		answerRepository.save(a2);
 
@@ -60,6 +71,8 @@ class AnswerRepositoryTests {
 	}
 
 	@Test
+	@Transactional
+	@Rollback(false)
 	void 저장() {
 		Question q = questionRepository.findById(2L).get();
 
@@ -77,6 +90,8 @@ class AnswerRepositoryTests {
 	}
 
 	@Test
+	@Transactional
+	@Rollback(false)
 	void 조회() {
 		Answer a = answerRepository.findById(1L).get();
 		assertThat(a.getContent()).isEqualTo("sbb는 질문답변 게시판입니다.");

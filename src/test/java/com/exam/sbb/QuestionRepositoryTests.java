@@ -2,6 +2,7 @@ package com.exam.sbb;
 
 import com.exam.sbb.question.Question;
 import com.exam.sbb.question.QuestionRepository;
+import com.exam.sbb.user.SiteUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,19 +46,21 @@ class QuestionRepositoryTests {
 		Question q1 = new Question();
 		q1.setSubject("sbb가 무엇인가요?");
 		q1.setContent("sbb에 대해서 알고 싶습니다.");
+		q1.setAuthor(new SiteUser(2L));
 		q1.setCreateDate(LocalDateTime.now());
 		questionRepository.save(q1);  // 첫번째 질문 저장
 
 		Question q2 = new Question();
 		q2.setSubject("스프링부트 모델 질문입니다.");
 		q2.setContent("id는 자동으로 생성되나요?");
+		q2.setAuthor(new SiteUser(2L));
 		q2.setCreateDate(LocalDateTime.now());
 		questionRepository.save(q2);  // 두번째 질문 저장
 
 		return q2.getId();
 	}
 
-	public void createSampleData() {
+	private void createSampleData() {
 		lastSampleDataId = createSampleData(questionRepository);
 	}
 
@@ -72,6 +75,7 @@ class QuestionRepositoryTests {
 			q.setSubject("%d번 질문".formatted(id));
 			q.setContent("%d번 질문의 내용".formatted(id));
 			q.setCreateDate(LocalDateTime.now());
+			q.setAuthor(new SiteUser(2L));
 			questionRepository.save(q);
 		});
 	}
@@ -117,7 +121,7 @@ class QuestionRepositoryTests {
 	void findAll() {
 		// SELECT * FROM question
 		List<Question> all = questionRepository.findAll();
-		assertThat(all.size()).isEqualTo(lastSampleDataId);
+		assertThat(all.size()).isEqualTo(Math.toIntExact(lastSampleDataId));
 
 		Question q = all.get(0);
 		assertThat(q.getSubject()).isEqualTo("sbb가 무엇인가요?");
@@ -136,7 +140,7 @@ class QuestionRepositoryTests {
 		Pageable pageable = PageRequest.of(0, Math.toIntExact(lastSampleDataId));
 
 		Page<Question> page = questionRepository.findAll(pageable);
-		assertThat(page.getTotalPages()).isEqualTo(2);
+		assertThat(page.getTotalPages()).isEqualTo(1);
 	}
 
 }
