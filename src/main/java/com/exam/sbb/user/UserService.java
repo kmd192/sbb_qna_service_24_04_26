@@ -1,5 +1,6 @@
 package com.exam.sbb.user;
 
+import com.exam.sbb.DataNotFoundException;
 import com.exam.sbb.SignupEmailDuplicatedExcetion;
 import com.exam.sbb.SignupUsernameDuplicatedException;
 import lombok.RequiredArgsConstructor;
@@ -34,4 +35,17 @@ public class UserService {
 
         return user;
     }
+
+    public SiteUser getUser(String username) {
+        return userRepository.findByUsername(username).orElseThrow(() ->
+                new DataNotFoundException("siteuser not found"));
+
+        /*Optional<SiteUser> siteUser = userRepository.findByUsername(username);
+        if(siteUser.isPresent()){
+            return siteUser.get();
+        } else {
+            throw new DataNotFoundException("siteuser not found");
+        }*/
+    }
+
 }
