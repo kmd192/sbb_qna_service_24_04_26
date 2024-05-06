@@ -1,6 +1,8 @@
 package com.exam.sbb.question;
 
 import com.exam.sbb.answer.AnswerForm;
+import com.exam.sbb.user.SiteUser;
+import com.exam.sbb.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -8,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @RequestMapping("/question")
 @Controller
@@ -25,6 +29,7 @@ public class QuestionController {
 
     // @Autowired 필드 주입
     private final QuestionService questionService;
+    private final UserService userService;
 
     @GetMapping("/list")
     //이자리에 @ResponseBody가 없으면 resources/templates/question_list.html을 뷰로 삼는다.
@@ -49,7 +54,7 @@ public class QuestionController {
     }
 
     @PostMapping("/create")
-    public String questionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult){
+    public String questionCreate(Principal principal, @Valid QuestionForm questionForm, BindingResult bindingResult){
         /*boolean hasError = false;
 
         if(questionForm.getSubject() == null || questionForm.getSubject().trim().length() == 0){
@@ -70,7 +75,9 @@ public class QuestionController {
             return "question_form";
         }
 
-        questionService.create(questionForm.getSubject(), questionForm.getContent());
+        SiteUser author = userService.getUser(principal.getName());
+
+        questionService.create(questionForm.getSubject(), questionForm.getContent(), author);
 
         return "redirect:/question/list";
     }

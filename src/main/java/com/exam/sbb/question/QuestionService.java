@@ -1,6 +1,7 @@
 package com.exam.sbb.question;
 
 import com.exam.sbb.DataNotFoundException;
+import com.exam.sbb.user.SiteUser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -44,10 +45,11 @@ public class QuestionService {
         throw new DataNotFoundException("question not found");*/
     }
 
-    public void create(String subject, String content) {
+    public void create(String subject, String content, SiteUser author) {
         Question q = new Question();
         q.setSubject(subject);
         q.setContent(content);
+        q.setAuthor(author);
         q.setCreateDate(LocalDateTime.now());
         questionRepository.save(q);
     }
