@@ -9,6 +9,7 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -30,6 +31,9 @@ public class Question {
 
     @ManyToOne
     private SiteUser author;
+
+    @ManyToMany
+    private Set<SiteUser> voter;
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
     // OneToMany는 기본적으로 LAZY(질문 먼저 가져오고, 답변 따로 가져오고)
