@@ -37,9 +37,11 @@ public class QuestionController {
 
     @GetMapping("/list")
     //이자리에 @ResponseBody가 없으면 resources/templates/question_list.html을 뷰로 삼는다.
-      public String list(String kw, Model model, @RequestParam(value = "page", defaultValue = "0") int page){
+      public String list(String kw, String sortCode, Model model, @RequestParam(value = "page", defaultValue = "0") int page){
           Page<Question> paging = questionService.getList(kw, page);
           model.addAttribute("paging", paging);
+          model.addAttribute("kw", kw);
+          model.addAttribute("sortCode", sortCode);
           return "question_list";
     }
 
